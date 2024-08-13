@@ -1,0 +1,48 @@
+doctype html
+html
+  head
+    title= title || "Театр Омега"
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+    link(rel='stylesheet', href='/css/style.css')
+
+  body
+    header
+      nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+        a.navbar-brand(href='/') Омега
+        button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation')
+          span.navbar-toggler-icon
+        #navbarNav.collapse.navbar-collapse
+          ul.navbar-nav.mr-auto
+            li.nav-item.active
+              a.nav-link(href='/') Афиша
+            li.nav-item
+              a.nav-link(href='/about') О нас
+            li.nav-item
+              a.nav-link(href='/contact') Контакты
+
+          ul.navbar-nav
+            if !user
+              li.nav-item
+                a.nav-link(role='button' class='btn' href='/auth/login') Вход
+              li.nav-item
+                a.nav-link(role='button' class='btn btn-primary' href='/auth/register') Зарегистрироваться
+            else
+              li.nav-item
+                a.nav-link(href=`users/${user.id}/cart`) Билеты
+              li.nav-item
+                a.nav-link(href='#') Привет, #{user.username}
+                if user.role === 'admin'
+                  li.nav-item
+                    a.nav-link(href='/admin/') Админка
+                li.nav-item
+                  form(action='/auth/logout', method='POST')
+                    button.btn.btn-link(style=' background: none; border: none; ') Выход
+
+    block content
+
+

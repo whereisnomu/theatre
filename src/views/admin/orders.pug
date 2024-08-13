@@ -1,0 +1,41 @@
+
+
+extends layout
+
+block content
+   h1 Управление заказами
+   if message
+      .alert.alert-primary(role="alert") #{message}
+   if orders.length
+    each order in orders
+      h2 Заказ № #{order.id} - Пользователь: #{order.user.username}
+      table.table
+        thead
+          tr
+            th Название спектакля
+            th Дата спектакля
+            th Жанр
+            th Место
+            th Цена
+        tbody
+          each ticket in order.tickets
+            tr
+              td #{ticket.show.title}
+              td #{ticket.show.showDate.toISOString().slice(0, 10)}
+              td #{ticket.show.genre.name}
+              td #{ticket.seatNumber}
+              td #{ticket.show.price} руб.
+            form(method="POST", action="/admin/orders/update-status")
+                  input(type="hidden", name="orderId", value=order.id)
+                  small.form-text.text-muted  Статус
+                  select.form-control(name="status").mb-2
+                     option(value="new", selected=order.status === 'new') Новый заказ
+                     option(value="paid", selected=order.status === 'paid') Оплачен
+                     option(value="cancelled", selected=order.status === 'cancelled') Отменен
+                  button.btn.btn-primary(type="submit").mr-2.mb-4 Обновить статус
+
+
+            form(method="POST", action="/admin/orders/delete/" + order.id)
+               button.btn.btn-danger(type="submit").mb-4 Удалить
+   else
+    p Нет заказов

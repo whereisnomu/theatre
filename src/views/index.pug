@@ -1,0 +1,22 @@
+extends shared/layout.pug
+
+block content
+  .container(style='margin-top: 100px')
+    .row
+      if shows && shows.length > 0
+        each show in shows
+          .col-md-4.mb-4
+            .card
+              img.card-img-top(src=show.imagePath alt='Show Image' style='height: 200px; object-fit: cover;')
+              .card-body
+                h5.card-title #{show.title}
+                p.card-text #{show.description}
+                ul.list-group.list-group-flush
+                  li.list-group-item Жанр: #{show.genre.name}
+                  li.list-group-item Дата: #{show.showDate.toISOString().slice(0, 10)}
+                  li.list-group-item Цена: #{show.price.toFixed(2)} руб.
+                .card-body
+                  a.btn.btn-primary(href=`/shows/buy/${show.id}`) Купить билет
+      else
+        .col-12
+          p Нет доступных спектаклей

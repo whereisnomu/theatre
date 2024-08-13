@@ -1,0 +1,84 @@
+extends layout.pug
+
+block content
+  .container.mt-4
+    h1 Управление спекталями
+    if message
+      .alert.alert-primary(role="alert") #{message}
+    form(action='/admin/shows', method='post', enctype='multipart/form-data') 
+      .form-group
+        label(for='title') Название спектакля
+        input#title.form-control(type='text', name='title', required='true')
+
+      .form-group
+        label(for='genreId') Жанр
+        select#genreId.form-control(name='genreId', required='true')
+            option(value='') Выберите жанр
+            each genre in genres
+                option(value=genre.id) #{genre.name}
+
+      .form-group
+        label(for='description') Описание
+        textarea#description.form-control(name='description')
+
+      .form-group
+        label(for='showDate') Дата показа
+        input#showDate.form-control(type='date', name='showDate', required='true')
+
+      .form-group
+        label(for='ageLimit') Возрастное ограничение
+        input#ageLimit.form-control(type='number', name='ageLimit')
+
+      .form-group
+        label(for='price') Цена
+        input#price.form-control(type='number', step='0.01', name='price', required='true')
+
+      .form-group
+        label(for='image') Изображение спектакля
+        input#image.form-control(type='file', name='imagePath') 
+
+      button.btn.btn-primary(type='submit').mb-4 Добавить спектакль
+
+    if shows && shows.length > 0
+      table.table.table-striped.mt-3
+        thead.thead-dark
+          tr
+            th Название
+            th Изображение
+            th Жанр
+            th Описание
+            th Дата показа
+            th Возрастное ограничение
+            th Цена
+            th Действие
+         
+        tbody
+           each show in shows
+              tr
+                 td #{show.title}
+                 td
+                    if show.imagePath
+                     img(src="/uploads/" + show.imagePath.split('\\').pop(), alt="Изображение спектакля", style="width:100px; height:auto;")
+
+                    else
+                        | Изображение не доступно
+                 td 
+                    if show.genre
+                      | #{show.genre.name}
+                    else
+                      | Жанр не указан
+                 td #{show.description}
+                 td #{show.showDate.toISOString().slice(0, 10)}
+                 td #{show.ageLimit || 'N/A'}
+                 td 
+                    if show.price
+                      | #{parseFloat(show.price).toFixed(2)} руб.
+                    else
+                      | N/A
+
+                 td
+                    a.btn.btn-sm.btn-info.mr-2(href=`/admin/shows/edit/${show.id}`).mb-2 Редактировать
+                    form(action=`/admin/shows/${show.id}?_method=DELETE`, method='post', style='display: inline;')
+                       button.btn.btn-sm.btn-danger(type='submit') Удалить
+    else
+      .alert.alert-warning Спектакли не найдены

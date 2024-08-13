@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+  body
+    h1 Админ панель
+    p Добро пожаловать в Админ панель!
+
+    h2 Пользователи
+    a(href='/admin/users') Посмотреть пользователей
+
+    h2 Спектакли
+    a(href='/admin/shows') Посмотреть Спектакли
+
+    h2 Заказы
+    a(href='/admin/orders') Посмотреть заказы
+
+    if users && users.length
+      ul
+        each user in users
+          li= user.username + ' - ' + user.email
+    else
+      p Пользователи не найдены.

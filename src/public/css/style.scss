@@ -1,0 +1,27 @@
+$primary-color: #333;
+$secondary-color: #555;
+$background-color: #f4f4f4;
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  color: $primary-color;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 10px;
+}
+
+a {
+  color: $secondary-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

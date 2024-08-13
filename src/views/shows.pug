@@ -1,0 +1,38 @@
+extends shared/layout.pug
+
+block content
+  .container(style='margin-top: 100px')
+
+    .row
+      if message
+         .alert.alert-danger(role="alert")
+            | #{message}
+      if shows && shows.length > 0
+        each show in shows
+          .col-md-12.mb-4 
+            .card
+              .row.no-gutters  
+                .col-md-4 
+                  if show.imagePath
+                    img.card-img-top(src="/uploads/" + show.imagePath.split('\\').pop(), alt="Изображение спектакля", style='width:100%;object-fit: cover;height: 100%;')
+                .col-md-8
+                  .card-body
+                    h5.card-title #{show.title}
+                    p.card-text(style='overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;') #{show.description}
+                    ul.list-group.list-group-flush
+                      li.list-group-item Жанр: #{show.genre.name}
+                      li.list-group-item Дата: #{show.showDate.toISOString().slice(0, 10)}
+                      li.list-group-item Цена: #{show.price} руб.
+                    .card-body
+                      form(action=`/users/${user.id}/cart/`, method='post')
+                          input(type='hidden', name='showId', value=show.id)
+                          input(type='hidden', name='userId', value=user.id)
+                          .form-group
+                          label(for='seatNumber') Номер места:
+                          input#seatNumber.form-control(type='text', name='seatNumber', required=true, placeholder='Введите номер места').mb-4
+                          button.btn.btn-primary(type='submit').mr-4 Купить билет
+                          a(href=`/${show.id}`) Подробности
+
+      else
+        .col-12
+          p Нет доступных спектаклей

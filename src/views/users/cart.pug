@@ -1,0 +1,35 @@
+
+extends ../shared/layout.pug
+
+block content
+  .container(style='margin-top: 80px;')
+    h1 Билеты в корзине
+    if message
+        .alert.alert-success(role="alert")
+          | #{message}
+    if tickets && tickets.length > 0
+      form(action=`/users/${user.id}/checkout`, method="post")
+        table.table.table-hover
+          thead.thead-dark
+            tr
+              th Название спектакля
+              th Дата спектакля
+              th Жанр
+              th Место
+              th Цена
+              th Действия
+          tbody
+            each ticket in tickets
+              tr
+                td #{ticket.show.title}
+                td #{ticket.show.showDate.toISOString().slice(0, 10)}
+                td #{ticket.show.genre.name}
+                td #{ticket.seatNumber}
+                td #{ticket.show.price} .руб
+                td
+                  button.btn.btn-danger(type='submit', formaction=`/users/${user.id}/cart/${ticket.id}/remove`).mb-2 Удалить
+
+        .mt-4.d-flex.justify-content-end
+          button.btn.btn-primary(type='submit') Оформить заказ
+    else
+      .alert.alert-warning Ваша корзина пуста.

@@ -1,0 +1,14 @@
+extends shared/layout.pug
+
+block content
+  .about
+    h1 О Театре "Омега"
+    img(src='/images/theater-logo.png', alt='Theater Logo')
+    p Наш девиз: "Воплощать истории в жизнь!"
+    h2 Недавние шоу
+    - const shows = [{title: 'Show 1', image: '/path/to/image1.jpg'}, {title: 'Show 2', image: '/path/to/image2.jpg'}]
+    .slider
+      each show in shows
+        .show
+          img(src=show.image, alt=show.title)
+          h3= show.title

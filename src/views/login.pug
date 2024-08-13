@@ -1,0 +1,36 @@
+doctype html
+html
+  head
+    title= title || "Театр 'Омега'"
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
+    link(rel='stylesheet', href='/css/style.css')
+
+  body
+
+    block content
+      .container(style='margin-top:100px')
+        .row.justify-content-center
+          .col-md-6
+            // Карточка для формы входа
+            .card
+              .card-body
+                h3.card-title.text-center Авторизация
+                // Проверка и вывод сообщения
+                if message
+                  .alert.alert-success #{message}
+                // Форма авторизации
+                form(action='/auth/login' method='post')
+                  .form-group
+                    label(for='email') Электронная почта
+                    input#email.form-control(type='email' name='email' required='required' autofocus)
+                  .form-group
+                    label(for='password') Пароль
+                    input#password.form-control(type='password' name='password' required='required')
+                  button.btn.btn-primary.btn-block(type='submit') Войти
+                  .mt-3.text-center
+                    a(href='/auth/register') Зарегистрироваться

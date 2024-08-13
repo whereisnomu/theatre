@@ -1,0 +1,12 @@
+{
+  "watch": [
+    "src/views/",
+    "src/app.js",
+    "src/routers",
+    "src/models/",
+    "src/controllers/",
+    "src/config/"
+  ],
+  "ext": "js,pug",
+  "ignore": ["node_modules"]
+}

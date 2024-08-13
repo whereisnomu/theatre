@@ -1,0 +1,47 @@
+extends ../layout.pug
+
+block content
+  .container.mt-4
+    h1 Редактирование спектакля
+    if message
+      .alert.alert-primary(role="alert") #{message}
+    if show
+      form(action='/admin/shows/' + show.id + '?_method=PUT', method='post', enctype='multipart/form-data')
+        .form-group
+          label(for='title') Название спектакля
+          input#title.form-control(type='text', name='title', required='true', value=show.title)
+
+        .form-group
+          label(for='genreId') Жанр
+          select#genreId.form-control(name='genreId', required='true')
+            option(value='') Выберите жанр
+            each genre in genres
+              option(value=genre.id selected=(genre.id === show.genreId ? true : false)) #{genre.name}
+
+        .form-group
+          label(for='description') Описание
+          textarea#description.form-control(name='description')= show.description
+
+        .form-group
+          label(for='showDate') Дата показа
+          input#showDate.form-control(type='date', name='showDate', required='true', value=show.showDate.toISOString().slice(0, 10))
+
+        .form-group
+          label(for='ageLimit') Возрастное ограничение
+          input#ageLimit.form-control(type='number', name='ageLimit', value=show.ageLimit)
+
+        .form-group
+          label(for='price') Цена
+          input#price.form-control(type='number', step='0.01', name='price', required='true', value=show.price)
+
+        .form-group.d-flex.flex-column
+          label(for='image') Изображение спектакля
+          if show.imagePath
+            img(src='/uploads/' + show.imagePath.split('\\').pop(), alt="Изображение спектакля", style="width:150px; height:auto;").mb-4
+          input#image.form-control(type='file', name='imagePath')
+          small.form-text.text-muted Изображение не выбрано, если не загрузить новое.
+
+        button.btn.btn-primary(type='submit').mb-4 Обновить спектакль
+
+    else
+      .alert.alert-warning Спектакль не найден

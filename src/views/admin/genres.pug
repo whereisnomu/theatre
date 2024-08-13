@@ -1,0 +1,35 @@
+extends layout.pug
+
+block content
+  .container.mt-4
+    h1 Управление жанрами
+
+    if message
+      .alert.alert-primary(role="alert") #{message}
+
+    // Форма для добавления нового жанра
+    form(action='/admin/genres/add', method='post')
+      .form-group
+        label(for='name') Название жанра
+        input#name.form-control(type='text', name='name', placeholder='Введите название жанра', required='true')
+      button.btn.btn-primary(type='submit').mb-4 Добавить жанр
+
+    // Таблица для отображения всех жанров
+    if genres && genres.length > 0
+      table.table.table-striped.mt-3
+        thead.thead-dark
+          tr
+            th Название
+            th Действия
+        tbody
+          each genre in genres
+            tr
+              td #{genre.name}
+              td
+                form(action=`/admin/genres/${genre.id}?_method=DELETE` method="POST" style='display: inline;')
+                  button.btn.btn-sm.btn-danger(type='submit') Удалить
+
+                     
+
+    else
+      .alert.alert-warning Не найдено жанров.
